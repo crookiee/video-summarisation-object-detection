@@ -68,31 +68,7 @@ class detection:
         return model
     
     #labelling and object detection
-    #will get called when instance of object created
-    def __call__(self):
-        #accessing summarised video
-        od_video = cv2.VideoCapture("summarised.mp4")
-        
-        #writing new video with object detection
-        od_w = int(od_video.get(cv2.CAP_PROP_FRAME_WIDTH))
-        od_h = int(od_video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        od_summarised = cv2.VideoWriter("od_summarised.mp4", fourcc, 24, (od_w, od_h))
-        
-        while True:
-            #start = time() #start time
-            status_od, od_frame = od_video.read()
-            if not status_od:
-                break
-            
-            od_score = self.getscore(od_frame)
-            od_frame = self.drawbox(od_score, od_frame)
-            #end = time() end time
-            
-            #fps = 1/np.round(end - start, 3)
-            #print(f"fps: {fps}")
-            od_summarised.write(od_frame)
-        
-        def getscore(self, od_frame):
+    def getscore(self, od_frame):
             self.model.to(self.device)
             od_frame = [od_frame]
             od_score = self.model(od_frame)
@@ -123,6 +99,32 @@ class detection:
                     cv2.putText(od_frame, self.class_to_label(labels[i]), (w1, h1), cv2.FONT_HERSHEY_SIMPLEX, 0.9, bgr, 2)
                     
             return od_frame
+        
+    #will get called when instance of object created
+    def __call__(self):
+        #accessing summarised video
+        od_video = cv2.VideoCapture("summarised.mp4")
+        
+        #writing new video with object detection
+        od_w = int(od_video.get(cv2.CAP_PROP_FRAME_WIDTH))
+        od_h = int(od_video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        od_summarised = cv2.VideoWriter("od_summarised.mp4", fourcc, 24, (od_w, od_h))
+        
+        while True:
+            #start = time() #start time
+            status_od, od_frame = od_video.read()
+            if not status_od:
+                break
+            
+            od_score = self.getscore(od_frame)
+            od_frame = self.drawbox(od_score, od_frame)
+            #end = time() end time
+            
+            #fps = 1/np.round(end - start, 3)
+            #print(f"fps: {fps}")
+            od_summarised.write(od_frame)
+        
+        
     
 #main
 fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v') #used in summarisevideo() and detect(), MPEG-4 codec just cause

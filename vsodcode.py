@@ -56,7 +56,7 @@ def summarisevideo(videofile, duration):
 
 class detection:
     
-    #prereqs, loading yolov5 model
+    #prereqs, loading yolov5 model section
     def __init__(self):
         self.model = self.load_model()
         self.classes = self.model.names
@@ -67,38 +67,38 @@ class detection:
         model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained = True)
         return model
     
-    #labelling and object detection
+    #labelling and object detection section
     def getscore(self, od_frame):
-            self.model.to(self.device)
-            od_frame = [od_frame]
-            od_score = self.model(od_frame)
-            labels, coordinates = od_score.xyxyn[0][:, -1], od_score.xyxyn[0][:, :-1]
+        self.model.to(self.device)
+        od_frame = [od_frame]
+        od_score = self.model(od_frame)
+        labels, coordinates = od_score.xyxyn[0][:, -1], od_score.xyxyn[0][:, :-1]
             
-            return labels,coordinates
+        return labels,coordinates
         
-        def classname(self, x):
-            return self.classes[int(x)] 
+    def classname(self, x):
+        return self.classes[int(x)] 
             
-        def drawbox(self, od_score, od_frame):
-            labels, coordinates = od_score
-            n = len(labels)
-            od_w, od_h = od_frame.shape[1], od_frame.shape[0]
+    def drawbox(self, od_score, od_frame):
+        labels, coordinates = od_score
+        n = len(labels)
+        od_w, od_h = od_frame.shape[1], od_frame.shape[0]
             
-            for i in range(n):
-                row = coordinates[i]
+        for i in range(n):
+            row = coordinates[i]
                 
-                if row[4] >= 0.2:
+            if row[4] >= 0.2:
                     
-                    w1 = int(row[0] * od_w) 
-                    h1 = int(row[1] * od_h) 
-                    w2 = int(row[2] * od_w) 
-                    h2 = int(row[3] * od_h) 
+                w1 = int(row[0] * od_w) 
+                h1 = int(row[1] * od_h) 
+                w2 = int(row[2] * od_w) 
+                h2 = int(row[3] * od_h) 
                     
-                    bgr = (0, 255, 0)
-                    cv2.rectangle(od_frame, (w1, h1), (w2, h2), bgr, 2)
-                    cv2.putText(od_frame, self.class_to_label(labels[i]), (w1, h1), cv2.FONT_HERSHEY_SIMPLEX, 0.9, bgr, 2)
+            bgr = (0, 255, 0)
+            cv2.rectangle(od_frame, (w1, h1), (w2, h2), bgr, 2)
+            cv2.putText(od_frame, self.classname(labels[i]), (w1, h1), cv2.FONT_HERSHEY_SIMPLEX, 0.9, bgr, 2)
                     
-            return od_frame
+        return od_frame
         
     #will get called when instance of object created
     def __call__(self):
@@ -123,9 +123,7 @@ class detection:
             #fps = 1/np.round(end - start, 3)
             #print(f"fps: {fps}")
             od_summarised.write(od_frame)
-        
-        
-    
+  
 #main
 fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v') #used in summarisevideo() and detect(), MPEG-4 codec just cause
 

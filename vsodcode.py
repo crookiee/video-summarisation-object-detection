@@ -12,7 +12,7 @@ def summarisevideo(videofile, duration):
     #summarised.mp4 only contains frames with big changes
     video_w = int(video_v.get(cv2.CAP_PROP_FRAME_WIDTH))
     video_h = int(video_v.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    summarised = cv2.VideoWriter("D:/Jere Stuff/Code/GitHub/vsod/odresult/summarised.mp4", fourcc, duration, (video_w, video_h))
+    summarised = cv2.VideoWriter("D:/path/summarised.mp4", fourcc, duration, (video_w, video_h))
     
     u = 0 #unique frame counter
     thres = 20 #threshold for frame similarity

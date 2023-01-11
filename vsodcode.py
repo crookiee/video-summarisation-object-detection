@@ -30,7 +30,7 @@ def summarisevideo(videofile, duration):
             
             frame_diff = np.sum(np.absolute(current_f - previous_f)) / np.size(current_f) #difference formula
             if(frame_diff > thres):
-                cv2.imwrite("D:/Jere Stuff/Code/GitHub/vsod/frameout/frame%d.jpg" %u, current_f) #write jpegs
+                cv2.imwrite("D:/path/%d.jpg" %u, current_f) #write jpegs
                 summarised.write(current_f) #write into .mp4
                 previous_f = current_f
                 u = u + 1 #add tally unique frames 
@@ -51,7 +51,7 @@ def summarisevideo(videofile, duration):
     cv2.destroyAllWindows()
     
     #store path of all saved frame jpegs as a string
-    frameslist = glob.glob("D:/Jere Stuff/Code/GitHub/vsod/frameout/*.jpg")
+    frameslist = glob.glob("D:/path/*.jpg")
     return frameslist
 
 class detection:
@@ -123,12 +123,12 @@ class detection:
         
         print("processing...")
         #accessing summarised video
-        od_video = cv2.VideoCapture("D:/Jere Stuff/Code/GitHub/vsod/odresult/summarised.mp4")
+        od_video = cv2.VideoCapture("D:/path/summarised.mp4")
         
         #writing new video with object detection
         od_w = int(od_video.get(cv2.CAP_PROP_FRAME_WIDTH))
         od_h = int(od_video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        od_summarised = cv2.VideoWriter( "D:/Jere Stuff/Code/GitHub/vsod/odresult/od_summarised.mp4", fourcc, duration, (od_w, od_h))
+        od_summarised = cv2.VideoWriter( "D:/path/od_summarised.mp4", fourcc, duration, (od_w, od_h))
         
         while True:
             status_od, od_frame = od_video.read()
@@ -147,7 +147,7 @@ class detection:
 fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v') #used in summarisevideo() and detect(), MPEG-4 codec just cause
 
 #passing cctv.mp4 into summarisevideo()
-videofile = "D:/Jere Stuff/Code/GitHub/vsod/cctv.mp4"
+videofile = "D:/path/cctv.mp4"
 duration = 24 #frames per second for result video
 frameslist = summarisevideo(videofile, duration)
 

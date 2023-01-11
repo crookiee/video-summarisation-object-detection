@@ -1,5 +1,5 @@
 # Overview
-VSOD's python code uses OpenCV to summarise long, redundant, cctv/surveillance camera or similar footage, and uses YOLOv5 to conduct object detection on the summarised video. We will be using cctv.mp4 as an example.
+This code uses OpenCV to summarise long, redundant, cctv/surveillance camera or similar footage, and uses YOLOv5 to conduct object detection on the summarised video. We will be using cctv.mp4 as an example.
 
 ### How does it work?
 The code can be split into 2 sections:
